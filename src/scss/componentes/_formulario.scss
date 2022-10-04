@@ -6,7 +6,8 @@
 
 .campo {
     display: flex;
-    margin-top: 2rem;
+    /* Arriba | Derecha | Abajo | Izquierda */
+    margin: 2rem 0 0 2rem;
     align-items: center;
     label {
         flex: 0 0 10rem;
