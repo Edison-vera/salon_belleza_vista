@@ -18,7 +18,10 @@
                 <h2 class="nombre-pagina">Crear Cuenta</h2>
 
                 <p class="descripcion-pagina">Llena el siguiente formulario para crear una cuenta</p>
-                <form action="" class="formulario">
+                <div id="alerta">
+
+                </div>
+                <form class="formulario" onsubmit="get_data_from(event)" id="form">
                     <div class="campo">
                         <label for="primer_nombre">Primer Nombre</label>
                         <input type="text" id="primer_nombre" name="primer_nombre" placeholder="Tu primer Nombre">
