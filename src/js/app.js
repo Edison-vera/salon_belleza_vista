@@ -1,12 +1,10 @@
 URL_API = "http://localhost:8080/usuario";
 
+//Funcion que espera el evento del formulario y mapea los campos hacia la base de datos 
 function get_data_from(event) {
-    const primer_nombre = document.getElementById("primer_nombre");
-
     //Indicar que no recargue pagina
     event.preventDefault();
     const form = event.target;
-
     const usuario = {
         primer_nombre: form.primer_nombre.value,
         segundo_nombre: form.segundo_nombre.value,
@@ -20,7 +18,7 @@ function get_data_from(event) {
     create(usuario)
 }
 
-
+//Funcion para crear usuario
 async function create(usuario) {
     //Enviar peticion
     const resp = await fetch(URL_API, {
@@ -30,33 +28,32 @@ async function create(usuario) {
         },
         body: JSON.stringify(usuario)
     });
-    const text = await resp.json();
-    const alerta = document.getElementById("alerta");
-    console.log(text);
-    let alerta_p = "";
-    alerta_p += ` 
-    <div class="alerta error">
-            <p>${text['primer_nombre']}</p>
-            </div>
+    //Si retorna error 400 ejecuta alertas de la validacion de formulario
+    if (resp.status == 400) {
+        const text = await resp.json();
+        const alerta = document.getElementById("alerta");
+        let alerta_p = "";
+        //Recorre los mensajes de error para el formulario y los muestrar en el html
+        for (const property in text) {
+            alerta_p += `
             <div class="alerta error">
-            <p>${text['segundo_nombre']}</p>
+                <p>${text[property]}</p>
             </div>
-            <div class="alerta error">
-            <p>${text['primer_apellido']}</p>
+        
+        `
+        }
+        //Insertar el html
+        alerta.innerHTML = alerta_p;
+        //Si todos los datos se encuentran bien realiza la creacion de usuario y muestrar alerta de exito
+    } else {
+        const text = await resp.text();
+        const alerta = document.getElementById("alerta");
+        let alerta_p = "";
+        alerta_p = `
+            <div class="alerta exito">
+                <p>${text}</p>
             </div>
-            <div class="alerta error">
-            <p>${text['segundo_apellido']}</p>
-            </div>
-            <div class="alerta error">
-            <p>${text['email']}</p>
-            </div>
-            <div class="alerta error">
-            <p>${text['password']}</p>
-            </div>
-            <div class="alerta error">
-            <p>${text['celular']}</p>
-            </div>
-    `
-    alerta.innerHTML = alerta_p;
-
+        `
+        alerta.innerHTML = alerta_p;
+    }
 }
