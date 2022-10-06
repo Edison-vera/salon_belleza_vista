@@ -47,13 +47,24 @@ async function create(usuario) {
         //Si todos los datos se encuentran bien realiza la creacion de usuario y muestrar alerta de exito
     } else {
         const text = await resp.text();
-        const alerta = document.getElementById("alerta");
-        let alerta_p = "";
-        alerta_p = `
+        if (text == "Email ya se encuentra registrado") {
+            const alerta = document.getElementById("alerta");
+            let alerta_p = "";
+            alerta_p = `
+            <div class="alerta error">
+                <p>${text}</p>
+            </div>
+        `
+            alerta.innerHTML = alerta_p;
+        } else {
+            const alerta = document.getElementById("alerta");
+            let alerta_p = "";
+            alerta_p = `
             <div class="alerta exito">
                 <p>${text}</p>
             </div>
         `
-        alerta.innerHTML = alerta_p;
+            alerta.innerHTML = alerta_p;
+        }
     }
 }
